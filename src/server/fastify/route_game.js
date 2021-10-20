@@ -1,8 +1,12 @@
+/**
+ * 
+ * @param {*} fastify 
+ * @param {*} options 
+ */
 
+const fp = require('fastify-plugin');
 
-
-
-async function routes(fastify, options) {
+async function route(fastify, options) {
   fastify.get('/game', async (request, reply) => {
     //return { hello: 'world test' }
     let user={
@@ -10,8 +14,8 @@ async function routes(fastify, options) {
     }
     let params = request.query.raw ? {} : { user: user };
 
-    reply.view("./server/views/game.hbs", params);
+    reply.view("./app/server/views/game.hbs", params);
   })
 }
 
-module.exports = routes
+module.exports = fp(route);

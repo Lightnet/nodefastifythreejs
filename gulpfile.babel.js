@@ -43,7 +43,7 @@ const src_hbs_files=[
 ];
 
 const output_dest='public';
-const output_server_dest='server';
+const output_server_dest='app/server';
 
 // CLIENT BUILD
 function client_build(callback){

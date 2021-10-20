@@ -9,7 +9,7 @@
 'use strict';
 // ESM
 import path from "path";
-import config from '../config';
+import config from '../../config';
 //import config from '../../config';
 import Fastify from 'fastify';
 const fastify = Fastify({
@@ -17,8 +17,11 @@ const fastify = Fastify({
 });
 
 // Setup our static files
+//console.log(__dirname);
+console.log( path.join(__dirname, "../../public"));
+
 fastify.register(require("fastify-static"), {
-  root: path.join(__dirname, "../public"),
+  root: path.join(__dirname, "../../public"),
   prefix: "/" // optional: default '/'
 });
 
@@ -36,7 +39,7 @@ fastify.register(require('./fastify/routes'));
 
 // Declare a route
 fastify.get('/', function (request, reply) {
-  console.log(fastify.knex);
+  //console.log(fastify.knex);
   let user={
     hello:"world param"
   }
@@ -47,7 +50,7 @@ fastify.get('/', function (request, reply) {
 
   request.query.raw
     ? reply.send(params)
-    : reply.view("./server/views/index.hbs", params);
+    : reply.view("./app/server/views/index.hbs", params);
 });
 
 // Run the server!

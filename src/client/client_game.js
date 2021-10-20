@@ -2,12 +2,25 @@
  * Threejs Game Test
  */
 console.log("Hello World!");
+//import THREE from "three";
+//import { el, mount } from "redom";
 
 import * as THREE from 'https://cdn.skypack.dev/three@0.133.1';
-//import THREE from "three";
+import { el, mount } from "https://redom.js.org/redom.es.min.js";
 
 import {test} from './a.js';
 console.log(test());
+
+const style = el("style",{textContent:`
+body{
+  margin:0;
+}
+`});
+mount(document.head,style);
+
+
+
+
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );

@@ -7,6 +7,16 @@
 # Information:
   Simple test build. babel, three, fastify
 
+# Setup:
+```js
+// install the packages
+$ npm install
+// auto build, start server and watch files
+$ gulp default
+
+
+```
+
 Packages:
  * esm 3.2.25
  * Babel js 7.15.8

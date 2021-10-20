@@ -4,6 +4,7 @@ const fp = require('fastify-plugin');
 
 async function routes(fastify, options, done) {
 
+  // SET UP SQLITE
   fastify.register(require('./fastify-knex'), {
     client: 'sqlite3',
     debug: false, // Knex debug SQL
@@ -14,6 +15,7 @@ async function routes(fastify, options, done) {
     useNullAsDefault: true //JS?
   });
 
+  // READY LOADED VARS
   fastify.addHook('onReady', async function (done) {
 
     // https://knexjs.org/#Schema
@@ -29,12 +31,18 @@ async function routes(fastify, options, done) {
           //console.log("CREATE USER TABLE");
           return fastify.knex.schema.createTable('users', function(t) {
             t.increments('id').primary();
-            t.string('first_name', 100);
-            t.string('last_name', 100);
+            t.string('alias', 100);
+            t.string('passphrase', 100);
+            t.string('sea');
+            t.string('token');
+            t.string('auth');
+            t.string('key');
+            t.string('accessrequest');
+            t.string('level');
+            t.string('access');
+            t.string('date');
             t.text('bio');
           });
-        }else{
-          //console.log("USER EXIST TABLE");
         }
         //await fastify.knex.schema
         //.createTable('users', table => {
