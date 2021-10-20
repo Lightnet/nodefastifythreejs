@@ -1,5 +1,7 @@
 
+.env
 node_modules/
 public/
 server/
+!src/server
 package-lock.json

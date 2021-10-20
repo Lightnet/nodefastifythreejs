@@ -8,12 +8,18 @@
 
 import { src, dest, watch, parallel, series } from 'gulp';
 
-import nodemon from 'gulp-nodemon';
+//import nodemon from 'gulp-nodemon';
+
 import config from'./config';
 import babel from "gulp-babel";
 import uglify from 'gulp-uglify';
 import buffer from 'vinyl-buffer';
 import size from 'gulp-size';
+
+//const browserSync = require('browser-sync').create();
+
+import {spawn } from 'child_process';
+let node;
 
 //BASIC ACCESS
 const src_client_files=[
@@ -28,17 +34,13 @@ const src_server_files=[
 
 //GAME FILES
 const src_client_game_files=[
-  './src/server/server.js'
+  './src/client/client_game.js'
+  , './src/client/a.js'
 ];
 
 const src_hbs_files=[
   './src/server/views/*.hbs'
 ];
-
-
-//const src_server_game_files=[
-  //'./src/server/server.js'
-//];
 
 const output_dest='public';
 const output_server_dest='server';
@@ -87,25 +89,38 @@ exports.server_build = server_build;
 
 function client_game_build(callback){
   return src(src_client_game_files)
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(size())
+    /*
+    .pipe(babel({
+      presets: ['@babel/preset-env'],
+      plugins: [
+        ["@babel/plugin-transform-runtime"]
+      ]
+    }))
+    */
+    //.pipe(buffer())
+    //.pipe(uglify())
+    //.pipe(size())
     .pipe(dest(output_dest));
 }
 exports.client_game_build = client_game_build;
 
 //WATCH FILES
 function watchFiles(callback) {
+
   watch(src_client_files, client_build);
   watch(src_server_files, server_build);
   watch(src_hbs_files, hbs_build);
 
   watch(src_client_game_files, client_game_build);
+  watch(['./src/**/*.js'], function() {
+    reload_server();
+  });
 
   callback();
 }
 
 // NODEMON SERVER
+/*
 function reload_server(done) {
   nodemon({
     //script: 'index.js'
@@ -131,6 +146,23 @@ function reload_server(done) {
   });
 }
 exports.reload_server = reload_server;
+*/
+
+// https://gist.github.com/webdesserts/5632955
+//nodejs functions
+function reload_server(done) {
+  if (node) node.kill();
+  let serverfile='./appserver.js';
+  node = spawn('node', [serverfile], {stdio: 'inherit'});
+  node.on('close', function (code) {
+    if (code === 8) {
+      gulp.log('Error detected, waiting for changes...');
+    }
+  });
+  return;
+  //done();
+}
+exports.reload_server = reload_server;
 
 //EXPORT DEFAULT
 exports.default = series(
@@ -138,9 +170,11 @@ exports.default = series(
   , server_build
   , client_game_build
   , hbs_build
-  //, copy_html
-  //, copy_svg
   , watchFiles
   , reload_server
 );
 
+// clean up if an error goes unhandled.
+process.on('exit', function() {
+  if (node) node.kill()
+})
