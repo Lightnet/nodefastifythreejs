@@ -35,6 +35,14 @@ fastify.register(require("point-of-view"), {
   }
 });
 
+fastify.register(require('fastify-cors'), { 
+  // put your options here
+  //origin: "http://127.0.0.1:5984",
+  //origin: "*",
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Accept', 'Content-Type', 'Authorization'],
+  methods: ['GET', 'PUT', 'OPTIONS', 'POST', 'DELETE']
+})
+
 fastify.register(require('./fastify/routes'));
 
 // Declare a route

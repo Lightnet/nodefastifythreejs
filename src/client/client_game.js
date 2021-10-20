@@ -1,6 +1,11 @@
 /**
  * Threejs Game Test
  */
+// https://stackoverflow.com/questions/20290402/three-js-resizing-canvas
+// 
+// 
+// 
+
 console.log("Hello World!");
 //import THREE from "three";
 //import { el, mount } from "redom";
@@ -17,9 +22,6 @@ body{
 }
 `});
 mount(document.head,style);
-
-
-
 
 
 const scene = new THREE.Scene();
@@ -46,4 +48,14 @@ const animate = function () {
 };
 
 animate();
+
+function onWindowResize(){
+
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+window.addEventListener( 'resize', onWindowResize, false );
 

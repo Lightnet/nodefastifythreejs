@@ -5,7 +5,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node appserver.js",
     "dev": "gulp default",
     "start": "nodemon --exec babel-node appbabel.js"
   },
@@ -30,6 +30,7 @@
     "dotenv": "^10.0.0",
     "esm": "^3.2.25",
     "fastify": "^3.22.1",
+    "fastify-cors": "^6.0.2",
     "fastify-formbody": "^5.1.0",
     "fastify-plugin": "^3.0.0",
     "fastify-static": "^4.4.2",
