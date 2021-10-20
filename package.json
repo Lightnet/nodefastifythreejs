@@ -31,6 +31,7 @@
     "esm": "^3.2.25",
     "fastify": "^3.22.1",
     "fastify-formbody": "^5.1.0",
+    "fastify-plugin": "^3.0.0",
     "fastify-static": "^4.4.2",
     "handlebars": "^4.7.7",
     "knex": "^0.95.11",

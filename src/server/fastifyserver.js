@@ -6,8 +6,6 @@
 // https://babeljs.io/docs/en/
 // 
 // 
-// 
-
 'use strict';
 // ESM
 import path from "path";
@@ -34,8 +32,11 @@ fastify.register(require("point-of-view"), {
   }
 });
 
+fastify.register(require('./fastify/routes'));
+
 // Declare a route
 fastify.get('/', function (request, reply) {
+  console.log(fastify.knex);
   let user={
     hello:"world param"
   }
@@ -43,13 +44,11 @@ fastify.get('/', function (request, reply) {
   let params = request.query.raw ? {} : { user: user };
   params.hello="world fastify";
   //reply.send({ hello: 'world' })
-  
+
   request.query.raw
     ? reply.send(params)
     : reply.view("./server/views/index.hbs", params);
 });
-
-fastify.register(require('./fastify/routes'));
 
 // Run the server!
 async function start(){

@@ -1,3 +1,7 @@
+/**
+ * Testing fastify server
+ */
+
 // https://glitch.com/edit/#!/possible-shade-geese?path=server.js%3A29%3A0
 // https://babeljs.io/docs/en/
 'use strict';

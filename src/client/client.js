@@ -1,3 +1,8 @@
+/**
+ * Test Index page
+ */
+
+
 console.log('hello world');
 const { el, mount } = redom;
 
@@ -7,18 +12,3 @@ const access = el("div",[
 ]);
 
 mount(document.body,access);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

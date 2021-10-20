@@ -1,3 +1,6 @@
+/**
+ * Threejs Game Test
+ */
 console.log("Hello World!");
 
 import * as THREE from 'https://cdn.skypack.dev/three@0.133.1';
@@ -30,6 +33,4 @@ const animate = function () {
 };
 
 animate();
-
-
 

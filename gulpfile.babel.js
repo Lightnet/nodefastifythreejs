@@ -6,7 +6,7 @@
 // https://www.devextent.com/import-es-modules-in-nodejs-with-typescript-and-babel/
 // https://morioh.com/p/7f28530e951d
 
-import { src, dest, watch, parallel, series } from 'gulp';
+import { src, dest, watch, parallel, series, log } from 'gulp';
 
 //import nodemon from 'gulp-nodemon';
 
@@ -99,7 +99,7 @@ function client_game_build(callback){
     */
     //.pipe(buffer())
     //.pipe(uglify())
-    //.pipe(size())
+    .pipe(size())
     .pipe(dest(output_dest));
 }
 exports.client_game_build = client_game_build;
@@ -112,52 +112,34 @@ function watchFiles(callback) {
   watch(src_hbs_files, hbs_build);
 
   watch(src_client_game_files, client_game_build);
-  watch(['./src/**/*.js'], function() {
-    reload_server();
-  });
+  watch([
+    './src/**/*.js'
+    //'./src/client/**/*.js'
+    //, './src/server/**/*.js'
+    , './src/server/views/*.hbs'
+  ], reload_server);
 
   callback();
 }
 
-// NODEMON SERVER
-/*
-function reload_server(done) {
-  nodemon({
-    //script: 'index.js'
-    //script: 'app.js'
-    script: 'appserver.js'
-    //, ext: 'js html'
-    , ext: 'js'
-    , env: { 
-    'NODE_ENV': 'development' // ex. process.env.NODE_ENV
-    ,'PORT': config.port || 3000
-    ,'HOST': config.host || 'localhost'
-    ,'SECRET': config.secretKey || '1234567890123456789012345678901234567890'
-    ,'TOKEN': config.tokenKey || 'token'
-  }
-  ,ignore: [
-    'gulpfile.js'
-    ,'node_modules/'
-    ,'public/'
-  ]
-  , done: done
-  }).on('restart', function () {
-    console.log("RESTARTED");
-  });
-}
-exports.reload_server = reload_server;
-*/
-
 // https://gist.github.com/webdesserts/5632955
 //nodejs functions
 function reload_server(done) {
+  console.log("Check Reload Server:");
   if (node) node.kill();
   let serverfile='./appserver.js';
   node = spawn('node', [serverfile], {stdio: 'inherit'});
   node.on('close', function (code) {
     if (code === 8) {
-      gulp.log('Error detected, waiting for changes...');
+      console.log('Error detected, waiting for changes...');
+      return done();
     }
+    console.log('Closed Server!');
+    return done();
+  });
+  node.on('spawn', function (code) {
+    console.log('Start Server!');
+    done();
   });
   return;
   //done();
